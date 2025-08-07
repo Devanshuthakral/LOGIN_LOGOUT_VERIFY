@@ -1,13 +1,21 @@
-import React from 'react';
-import {  Route, Routes, Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {  Route, Routes, Link, Navigate } from 'react-router-dom';
 import {useAuthStore} from "./store/auth";
 import LandingPage from './pages/LandingPage'
+import LoadingSpinner from './components/LoadingSpinner';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import VerifyEmail from './pages/Verify'; 
 
 function App() {
-  const {isAuthenticated,user} =useAuthStore();
+  const { isCheckingAuth,checkAuth,isAuthenticated,user} =useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  console.log(isCheckingAuth,'gg')
+
+  if(isCheckingAuth) return <LoadingSpinner/>;
   return (
     <>
       <div className="p-4 text-center space-x-4">
@@ -28,7 +36,16 @@ function App() {
       } />
         <Route path="/signup" element={isAuthenticated && user?.isVerified?(<Navigate to="/" />):(<Signup />)} />
         <Route path="/verifyEmail"  element={<VerifyEmail />} /> 
-        <Route path="/landingPage" element={<LandingPage />} /> 
+        <Route path="/landingPage" element={
+          !isAuthenticated ?(
+            <Navigate to = '/login' />
+          ) : !user?.isVerified ? (
+            <Navigate to = '/verifyEmail' />
+          ) : (
+          <LandingPage />
+          )
+        } /> 
+  
       </Routes>
       </>
   );

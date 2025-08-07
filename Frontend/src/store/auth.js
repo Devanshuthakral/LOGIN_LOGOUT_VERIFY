@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/auth";
+axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
   isLoading: false,
@@ -69,4 +70,19 @@ export const useAuthStore = create((set) => ({
       });
     }
   },
+  checkAuth:async() => {
+    set({isCheckingAuth:true,error:null});
+    try{
+      const response = await axios.get(`${API_URL}/check-auth`);
+      set({user:response.data.user,isCheckingAuth:false,isAuthenticated:true});
+    } catch (error) {
+      set({
+        error:error.message
+      })
+    }
+    finally{
+      set({isCheckingAuth:false})
+    }
+  }
+
 }));

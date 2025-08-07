@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/auth';
+import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const Navigate = useNavigate();
 
   const { login, isLoading, error} = useAuthStore();
   const handleLogin = async (e) => {
     e.preventDefault();
    
     await login(email,password);
+    Navigate("/landingPage")
   };
 
   return (

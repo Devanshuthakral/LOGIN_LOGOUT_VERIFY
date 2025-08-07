@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import { connectDb } from "./database/connectDb.js";
 import authRoutes from "./routes/authRoutes.js";
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT
 app.use(express.json()); // allows us to parse incoming requests:req.body
 app.use(cors({ origin: "http://localhost:5173", credentials : true}));
-
+app.use(cookieParser());
 app.get("/",(req,res)=>{
     res.send("hello expres222s")
 })

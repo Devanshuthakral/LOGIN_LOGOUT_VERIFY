@@ -1,5 +1,7 @@
 import React from 'react';
+import { useAuthStore } from '../store/auth';
 export default function LandingPage() {
+  const {user} = useAuthStore();
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 via-white to-blue-100">
       {/* Navbar */}
@@ -23,7 +25,7 @@ export default function LandingPage() {
         {/* Left Content */}
         <div className="max-w-xl">
           <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-800 leading-tight">
-            The best way <br /> to showcase your project.
+            {user.name}
           </h1>
           <p className="text-gray-600 mt-4">
             Here you can put a short description about your project...
